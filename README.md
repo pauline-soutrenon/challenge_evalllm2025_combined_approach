@@ -1,4 +1,4 @@
-# Challenge EvalLLM2025 Extraction d'information - approche combinée
+# EvalLLM2025 Information extraction challenge - Combined approach
 
 ## Description
 This repository contains our work for the [EvalLLM2025 challenge](https://evalllm2025.sciencesconf.org/resource/page/id/5) about information extraction (Named Entity Recognition and Relations Extraction).

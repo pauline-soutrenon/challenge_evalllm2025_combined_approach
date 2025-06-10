@@ -6,7 +6,7 @@ This repository contains our work for the [EvalLLM2025 challenge](https://evalll
 We tested two different approaches: using only LLMs (see the repository at: ) and using a combined approach that leverages CamemBERT Bio GLiNER along with an LLM to refine the results.
 
 ## Workflow
-[Combined approach workflow](documentation/combined_approach_workflow.png)
+![Combined approach workflow](documentation/combined_approach_workflow.png)
 
 The following steps will be performed:
 1. NER with Camembert bio GLiNER with a simplifie list of labels

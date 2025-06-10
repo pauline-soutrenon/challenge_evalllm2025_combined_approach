@@ -1,0 +1,345 @@
+# path to data to be process
+data_path: "../data/training_data/20250428_NP_train-evalLLM.json"
+# data_path: "../data/test_data/20250516_NP_test_evalLLM.json"
+
+# path to save predictions
+predictions_path: "predictions/predictions_{timestamp}/"
+
+# approach (CamemBERT bio GLiNER alone or combined with LLM)
+combined_approach: True  # if True : call LLM ; if False : simple mapping to true labels (step 2)
+
+# LLM requests
+ollama_url: "http://localhost:11434/api/generate"
+ollama_model_for_ner: "mistral:7b"
+ollama_model_for_re: "llama3.2:1b"
+llm_attempts_requests_for_ner: 2
+llm_attempts_requests_for_re: 2
+
+# step 1
+json_output_step_1: "predictions/predictions_{timestamp}/{timestamp}_predictions_step_1.json"
+csv_output_step_1: "predictions/predictions_{timestamp}/{timestamp}_predictions_vs_truth_step_1.csv"
+
+# step 2
+json_output_step_2: "predictions/predictions_{timestamp}/{timestamp}_predictions_step_2.json"
+csv_output_step_2: "predictions/predictions_{timestamp}/{timestamp}_predictions_vs_truth_step_2.csv"
+
+# step 3
+json_output_step_3: "predictions/predictions_{timestamp}/{timestamp}_predictions_step_3.json"
+csv_output_step_3: "predictions/predictions_{timestamp}/{timestamp}_predictions_vs_truth_step_3.csv"
+
+# step 4
+xlsx_output_step_4: "predictions/predictions_{timestamp}/{timestamp}_predictions_vs_truth_step_4.xlsx"
+graph_step_4: "predictions/predictions_{timestamp}/{timestamp}_graph_step_4.html"
+
+# step 5
+json_output_step_5: "predictions/predictions_{timestamp}/{timestamp}_predictions_step_5.json"
+
+# step 6
+json_output_step_6: "predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json"
+
+mapping_name: 14
+
+tested_labels: {
+  1: ['ORGANIZATION', 'LOCATION', 'REL_DATE', 'LOC_REF_TO_ORG', 'INF_DISEASE', 'NON_INF_DISEASE', 'ABS_PERIOD', 'DOC_DATE', 'TOXIC_C_AGENT', 'ORG_REF_TO_LOC', 'FUZZY_PERIOD', 'BIO_TOXIN', 'EXPLOSIVE', 'RADIOISOTOPE', 'REL_PERIOD', 'DOC_SOURCE', 'PATHOGEN', 'DOC_AUTHOR', 'PATH_REF_TO_DIS', 'ABS_DATE', 'DIS_REF_TO_PATH'],
+  2: ['ORGANIZATION', 'LOCATION', 'RELATIVE DATE', 'LOCATION REFERENCE TO ORGANIZATION', 'INFECTIOUS DISEASE', 'NON INFECTIOUS DISEASE', 'ABSOLUTE PERIOD', 'DOCUMENT DATE', 'TOXIC C AGENT', 'ORGANIZATION REFERENCE TO LOCATION', 'FUZZY PERIOD', 'BIO TOXIN', 'EXPLOSIVE', 'RADIOISOTOPE', 'RELATIVE PERIOD', 'DOCUMENT SOURCE', 'PATHOGEN', 'DOCUMENT AUTHOR', 'PATH REFERENCE TO DISEASE', 'ABSOLUTE DATE', 'DISEASE REFERENCE TO PATH'],
+  3: ['Organization', 'Location', 'Relative date', 'Location reference to organization', 'Infectious disease', 'Non infectious disease', 'Absolute period', 'Document date', 'Toxic c agent', 'Organization reference to location', 'Fuzzy period', 'Bio toxin', 'Explosive', 'Radioisotope', 'Relative period', 'Document source', 'Pathogen', 'Document author', 'Path reference to disease', 'Absolute date', 'Disease reference to path'],
+  4: ['ORGANIZATION', 'LOCATION', 'RELATIVE DATE', 'INFECTIOUS DISEASE', 'NON INFECTIOUS DISEASE', 'ABSOLUTE PERIOD', 'DOCUMENT DATE', 'TOXIC C AGENT', 'FUZZY PERIOD', 'BIO TOXIN', 'EXPLOSIVE', 'RADIOISOTOPE', 'RELATIVE PERIOD', 'DOCUMENT SOURCE', 'PATHOGEN', 'DOCUMENT AUTHOR', 'ABSOLUTE DATE'],
+  5: ['Organization', 'Location', 'Relative date', 'Infectious disease', 'Non infectious disease', 'Absolute period', 'Document date', 'Toxic c agent', 'Fuzzy period', 'Bio toxin', 'Explosive', 'Radioisotope', 'Relative period', 'Document source', 'Pathogen', 'Document author', 'Absolute date'],
+  6: ['Organisation', 'Lieu', 'Date relative', 'Maladie infectieuse', 'Maladie non infectieuse', 'Période absolue', 'Date document', 'Agent toxique', 'Période fuzzy', 'Bio toxine', 'Explosif', 'Radioisotope', 'Période relative', 'Source document', 'Pathogène', 'Auteur document', 'Date absolue'],
+  7: ['Organisation', 'Lieu', 'Date', 'Maladie infectieuse', 'Maladie non infectieuse', 'Période', 'Agent toxique', 'Bio toxine', 'Explosif', 'Radioisotope', 'Source document', 'Pathogène', 'Auteur document'],
+  8: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Agent toxique', 'Bio toxine', 'Radioisotope', 'Explosif', 'Pathogène'],
+  9: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Bio toxine', 'Explosif', 'Radioisotope', 'Source document', 'Pathogène', 'Auteur document'],
+  10: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Toxine biologique', 'Matière explosive', 'Radioisotope', 'Source document', 'Pathogène', 'Auteur document'],
+  11: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Bio toxine', 'Matière explosive', 'Radioisotope', 'Source document', 'Pathogène', 'Auteur document'],
+  12: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Toxine biologique', 'Substance explosive', 'Radioisotope', 'Source document', 'Pathogène', 'Auteur document'],
+  13: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Bio toxine', 'Substance explosive', 'Radioisotope', 'Source document', 'Pathogène', 'Auteur document'],
+  14: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Bio toxine', 'Substance explosive', 'Radioisotope', 'Source document', 'Agent pathogène', 'Auteur document'],
+  15: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Toxine biologique', 'Matière explosive', 'Radioisotope', 'Source document', 'Agent pathogène', 'Auteur document'],
+  16: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Bio toxine', 'Matière explosive', 'Radioisotope', 'Source document', 'Agent pathogène', 'Auteur document'],
+}
+
+# No LLM case
+complete_mapping: {
+  1: {},
+  2: {
+    'REL_DATE': 'RELATIVE DATE',
+    'LOC_REF_TO_ORG': 'LOCATION REFERENCE TO ORGANIZATION',
+    'INF_DISEASE': 'INFECTIOUS DISEASE',
+    'NON_INF_DISEASE': 'NON INFECTIOUS DISEASE',
+    'ABS_PERIOD': 'ABSOLUTE PERIOD',
+    'DOC_DATE': 'DOCUMENT DATE',
+    'TOXIC_C_AGENT': 'TOXIC C AGENT',
+    'ORG_REF_TO_LOC': 'ORGANIZATION REFERENCE TO LOCATION',
+    'FUZZY_PERIOD': 'FUZZY PERIOD',
+    'BIO_TOXIN': 'BIO TOXIN',
+    'REL_PERIOD': 'RELATIVE PERIOD',
+    'DOC_SOURCE': 'DOCUMENT SOURCE',
+    'DOC_AUTHOR': 'DOCUMENT AUTHOR',
+    'PATH_REF_TO_DIS': 'PATH REFERENCE TO DISEASE',
+    'ABS_DATE': 'ABSOLUTE DATE',
+    'DIS_REF_TO_PATH': 'DISEASE REFERENCE TO PATH'},
+  3: {
+    'ORGANIZATION': 'Organization',
+    'LOCATION': 'Location',
+    'REL_DATE': 'Relative date',
+    'LOC_REF_TO_ORG': 'Location reference to organization',
+    'INF_DISEASE': 'Infectious disease',
+    'NON_INF_DISEASE': 'Non infectious disease',
+    'ABS_PERIOD': 'Absolute period',
+    'DOC_DATE': 'Document date',
+    'TOXIC_C_AGENT': 'Toxic c agent',
+    'ORG_REF_TO_LOC': 'Organization reference to location',
+    'FUZZY_PERIOD': 'Fuzzy period',
+    'BIO_TOXIN': 'Bio toxin',
+    'EXPLOSIVE': 'Explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Relative period',
+    'DOC_SOURCE': 'Document source',
+    'PATHOGEN': 'Pathogen',
+    'DOC_AUTHOR': 'Document author',
+    'PATH_REF_TO_DIS': 'Path reference to disease',
+    'ABS_DATE': 'Absolute date',
+    'DIS_REF_TO_PATH': 'Disease reference to path'},
+  4: {
+    'ORGANIZATION': 'ORGANIZATION',
+    'LOCATION': 'LOCATION',
+    'REL_DATE': 'RELATIVE DATE',
+    'INF_DISEASE': 'INFECTIOUS DISEASE',
+    'NON_INF_DISEASE': 'NON INFECTIOUS DISEASE',
+    'ABS_PERIOD': 'ABSOLUTE PERIOD',
+    'DOC_DATE': 'DOCUMENT DATE',
+    'TOXIC_C_AGENT': 'TOXIC C AGENT',
+    'FUZZY_PERIOD': 'FUZZY PERIOD',
+    'BIO_TOXIN': 'BIO TOXIN',
+    'EXPLOSIVE': 'EXPLOSIVE',
+    'RADIOISOTOPE': 'RADIOISOTOPE',
+    'REL_PERIOD': 'RELATIVE PERIOD',
+    'DOC_SOURCE': 'DOCUMENT SOURCE',
+    'PATHOGEN': 'PATHOGEN',
+    'DOC_AUTHOR': 'DOCUMENT AUTHOR',
+    'ABS_DATE': 'ABSOLUTE DATE'},
+  5: {
+    'ORGANIZATION': 'Organization',
+    'LOCATION': 'Location',
+    'REL_DATE': 'Relative date',
+    'INF_DISEASE': 'Infectious disease',
+    'NON_INF_DISEASE': 'Non infectious disease',
+    'ABS_PERIOD': 'Absolute period',
+    'DOC_DATE': 'Document date',
+    'TOXIC_C_AGENT': 'Toxic c agent',
+    'FUZZY_PERIOD': 'Fuzzy period',
+    'BIO_TOXIN': 'Bio toxin',
+    'EXPLOSIVE': 'Explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Relative period',
+    'DOC_SOURCE': 'Document source',
+    'PATHOGEN': 'Pathogen',
+    'DOC_AUTHOR': 'Document author',
+    'ABS_DATE': 'Absolute date'},
+  6: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date relative',
+    'INF_DISEASE': 'Maladie infectieuse',
+    'NON_INF_DISEASE': 'Maladie non infectieuse',
+    'ABS_PERIOD': 'Période absolue',
+    'DOC_DATE': 'Date document',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période fuzzy',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Explosif',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période relative',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date absolue'},
+  7: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie infectieuse',
+    'NON_INF_DISEASE': 'Maladie non infectieuse',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Explosif',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  8: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Explosif',
+    'RADIOISOTOPE': 'Radioisotope',
+    'PATHOGEN': 'Pathogène'},
+  9: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Explosif',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  10: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Toxine biologique',
+    'EXPLOSIVE': 'Matière explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  11: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Matière explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  12: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Toxine biologique',
+    'EXPLOSIVE': 'Substance explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  13: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Substance explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  14: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Substance explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Agent pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  15: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Toxine biologique',
+    'EXPLOSIVE': 'Matière explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Agent pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+  16: {
+    'ORGANIZATION': 'Organisation',
+    'LOCATION': 'Lieu',
+    'REL_DATE': 'Date',
+    'INF_DISEASE': 'Maladie',
+    'NON_INF_DISEASE': 'Maladie',
+    'ABS_PERIOD': 'Période',
+    'DOC_DATE': 'Date',
+    'TOXIC_C_AGENT': 'Agent toxique',
+    'FUZZY_PERIOD': 'Période',
+    'BIO_TOXIN': 'Bio toxine',
+    'EXPLOSIVE': 'Matière explosive',
+    'RADIOISOTOPE': 'Radioisotope',
+    'REL_PERIOD': 'Période',
+    'DOC_SOURCE': 'Source document',
+    'PATHOGEN': 'Agent pathogène',
+    'DOC_AUTHOR': 'Auteur document',
+    'ABS_DATE': 'Date'},
+}
+
+# LLM case
+simple_mapping: {
+  14: {
+    "Organisation": "ORGANIZATION",
+    "Lieu": "LOCATION",
+    "Agent toxique": "TOXIC_C_AGENT",
+    "Bio toxine": "BIO_TOXIN",
+    "Substance explosive": "EXPLOSIVE",
+    "Radioisotope": "RADIOISOTOPE",
+    "Source document": "DOC_SOURCE",
+    "Agent pathogène": "PATHOGEN",
+    "Auteur document": "DOC_AUTHOR"
+  }
+}

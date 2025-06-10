@@ -1,0 +1,11 @@
+torch==2.6.0
+transformers==4.49
+spacy==3.8.5
+spacy-transformers==1.3.8
+scikit-learn==1.6.1
+pandas==2.2.3
+openpyxl==3.1.5
+plotly==6.0.1
+jsonschema==4.23.0
+datasets==3.5.0
+gliner==0.2.17

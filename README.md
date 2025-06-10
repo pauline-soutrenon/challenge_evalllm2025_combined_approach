@@ -7,7 +7,11 @@ We began with an **exploratory data analysis** phase to better understand the tr
 
 Then, we worked on **two appoaches**:
 - a **LLM-only approach** (see the repository at: …),
-- a **combined approach** leveraging CamemBERT-bio-GLiNER for initial entity recognition, followed by a small LLM for fine-grained classificationt.
+- a **combined approach** leveraging CamemBERT-bio-GLiNER for initial entity recognition, followed by a small LLM for fine-grained classification.
+
+## Prerequisites
+
+⚠️ **Training and test datasets are not provided in the repository.** They should be manually added to the data/ folder, in either train_data/ or test_data/, as appropriate.
 
 ## Data exploration
 

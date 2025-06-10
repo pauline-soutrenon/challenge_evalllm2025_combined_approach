@@ -202,3 +202,5 @@ data_exploration/*
 !data_exploration/data_exploration.ipynb
 !data_exploration/plot_document_graphes.py
 !data_exploration/requirements.txt
+
+combined_approach_pipeline/predictions/*

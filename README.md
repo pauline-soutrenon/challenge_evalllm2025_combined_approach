@@ -9,12 +9,11 @@ We tested two different approaches: using only LLMs (see the repository at: ) an
 ![Combined approach workflow](documentation/combined_approach_workflow_en.png)
 
 The following steps will be performed:
-1. NER with Camembert bio GLiNER with a simplifie list of labels
-2. NER with LLM to refine labels previously predicted (for train data, it is possoble to do a mapping to have some results)
-3. NER postprocessing: correct start and end positions if needed and remove duplicates entities
-4. NER results exploration
-5. RE with LLM
-6. NER postprocessing
+1. NER with Camembert bio GLiNER with a simplified list of labels
+2. Fine-grained classification with LLM to refine labels previously predicted (for train data, it is possible to do a mapping to have some results)
+3. NER post-processing: correct start and end positions if needed and remove duplicates entities
+4. RE with LLM
+5. NER postprocessing
 
 ## Installation
 1. Create a Conda environment or a venv:

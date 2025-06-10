@@ -14,7 +14,6 @@ Then, we worked on **two appoaches**:
 ⚠️ **Training and test datasets are not provided in the repository.** They should be manually added to the data/ folder, in either train_data/ or test_data/, as appropriate.
 
 ## Data exploration
-
 Data exploration code can be found in the `data_exploration/` folder.
 
 ### Installation
@@ -41,16 +40,22 @@ First, the Jupyter notebook `data_exploration.ipynb` can be used to generate sta
 Then, the Python script `plot_document_graphes.py` can be used to generate a network graph for each event in every document (i.e., one graph per document-event pair). This step is limited to the training data, since entities and their labels are not available in the test dataset. The resulting images are saved in the `training_data__images/documents_graphes/` directory. A .txt file is also created, containing the number of entities for each event.
 
 ## Combined approach
+Combined approach pipeline can be found in the `combined_approach_pipeline/` folder.
 
 ### Workflow
 ![Combined approach workflow](documentation/combined_approach_workflow_en.png)
 
 The following steps will be performed:
-1. NER with Camembert bio GLiNER with a simplified list of labels
-2. Fine-grained classification with LLM to refine labels previously predicted (for train data, it is possible to do a mapping to have some results)
-3. NER post-processing: correct start and end positions if needed and remove duplicates entities
-4. RE with LLM
-5. NER postprocessing
+1. **NER with Camembert bio GLiNER** and a simplified list of labels
+2. **Fine-grained classification with LLM** to specify labels previously predicted (for train data, it is possible to do a mapping to have results)
+3. **NER post-processing** to :
+    - correct start and end positions if needed ;
+    - retrieve all mentions of the same entity in the text ;
+    - add unique ids ;
+    - handle the non-overlapping of entities.
+4. **NER results exploration**
+5. **RE with LLM**
+6. **RE postprocessing**
 
 ### Installation
 1. Create a Conda environment or a venv:
@@ -66,6 +71,9 @@ pip install -r requirements.txt
 ```
 
 3. Install [Ollama](https://ollama.com/download)
+
+### Configuration file
+All parameters ...
 
 ### Run
 
@@ -84,4 +92,4 @@ pip install -r requirements.txt
 python combined_approach_pipeline.py
 ```
 
-3. Results of each steps are available in predictions path (see `config.yml` file).
+3. Results of each steps are available in predictions path (see `config.yml` file). "predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json"

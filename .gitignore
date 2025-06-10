@@ -192,3 +192,8 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+data/test_data/*
+!data/test_data/README.md
+data/training_data/*
+!data/training_data/README.md

@@ -1,0 +1,6 @@
+spacy
+pandas
+seaborn
+plotly
+networkx
+scipy

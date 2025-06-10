@@ -6,7 +6,7 @@ This repository contains our work for the [EvalLLM2025 challenge](https://evalll
 We began with an **exploratory data analysis** phase to better understand the training dataset.
 
 Then, we worked on **two appoaches**:
-- a **LLM-only approach** (see the repository at: …),
+- a **LLM-only approach** (see [this repository](https://github.com/LucieBader/Challenge_EvalLLM2025)),
 - a **combined approach** leveraging CamemBERT-bio-GLiNER for initial entity recognition, followed by a small LLM for fine-grained classification.
 
 ## Prerequisites

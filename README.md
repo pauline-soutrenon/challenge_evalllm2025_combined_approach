@@ -11,7 +11,30 @@ Then, we worked on **two appoaches**:
 
 ## Data exploration
 
-###
+Data exploration code can be found in the `data_exploration/` folder.
+
+### Installation
+1. Create a Conda environment or a venv:
+```bash
+cd data_exploration/
+conda create -n challenge_evalllm2025 python=3.12.9
+conda activate challenge_evalllm2025
+```
+
+2. Install requirements:
+```bash
+pip install -r requirements.txt
+```
+
+3. Dowload a SpaCy model:
+```bash
+python -m spacy download fr_core_news_sm
+```
+
+### Run
+First, the Jupyter notebook `data_exploration.ipynb` can be used to generate statistics on the training dataset. The resulting images are saved in the `training_data__images/` directory. It also works with the test dataset, although not all images will be generated in that case.
+
+Then, the Python script `plot_document_graphes.py` can be used to generate a network graph for each event in every document (i.e., one graph per document-event pair). This step is limited to the training data, since entities and their labels are not available in the test dataset. The resulting images are saved in the `training_data__images/documents_graphes/` directory. A .txt file is also created, containing the number of entities for each event.
 
 ## Combined approach
 

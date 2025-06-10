@@ -3,9 +3,19 @@
 ## Description
 This repository contains our work for the [EvalLLM2025 challenge](https://evalllm2025.sciencesconf.org/resource/page/id/5) about information extraction (Named Entity Recognition and Relations Extraction).
 
-We tested two different approaches: using only LLMs (see the repository at: ) and using a combined approach that leverages CamemBERT Bio GLiNER along with an LLM to refine the results.
+We began with an **exploratory data analysis** phase to better understand the training dataset.
 
-## Workflow
+Then, we worked on **two appoaches**:
+- a **LLM-only approach** (see the repository at: …),
+- a **combined approach** leveraging CamemBERT-bio-GLiNER for initial entity recognition, followed by a small LLM for fine-grained classificationt.
+
+## Data exploration
+
+###
+
+## Combined approach
+
+### Workflow
 ![Combined approach workflow](documentation/combined_approach_workflow_en.png)
 
 The following steps will be performed:
@@ -15,7 +25,7 @@ The following steps will be performed:
 4. RE with LLM
 5. NER postprocessing
 
-## Installation
+### Installation
 1. Create a Conda environment or a venv:
 ```bash
 cd combined_approach_pipeline/
@@ -30,7 +40,7 @@ pip install -r requirements.txt
 
 3. Install [Ollama](https://ollama.com/download)
 
-## Run
+### Run
 
 1. Before running the pipeline, make sure to :
     - Put your test or training data in the `data/` folder. 

@@ -197,3 +197,8 @@ data/test_data/*
 !data/test_data/README.md
 data/training_data/*
 !data/training_data/README.md
+
+data_exploration/*
+!data_exploration/data_exploration.ipynb
+!data_exploration/plot_document_graphes.py
+!data_exploration/requirements.txt

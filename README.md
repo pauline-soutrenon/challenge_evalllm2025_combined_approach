@@ -48,4 +48,4 @@ pip install -r requirements.txt
 python combined_approach_pipeline.py
 ```
 
-3. Results of each steps are available in predictions path (see `config.yml` file). Final output is called: `INRIA_mission_defense_et_securite_3.json`.
+3. Results of each steps are available in predictions path (see `config.yml` file).

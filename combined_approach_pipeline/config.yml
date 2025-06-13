@@ -1,6 +1,6 @@
-# path to data to be process
-data_path: "../data/training_data/20250428_NP_train-evalLLM.json"
-# data_path: "../data/test_data/20250516_NP_test_evalLLM.json"
+# path to data to process
+data_filename: "../data/training_data/20250428_NP_train-evalLLM.json"
+# data_filename: "../data/test_data/20250516_NP_test_evalLLM.json"
 
 # path to save predictions
 predictions_path: "predictions/predictions_{timestamp}/"

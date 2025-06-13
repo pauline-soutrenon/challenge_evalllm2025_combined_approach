@@ -51,7 +51,7 @@ def main():
     start_time = time.time()
 
     logging.info("### STEP 1: NER with Camembert Bio GLiNER ###")
-    data_path = config["data_path"]
+    data_filename = config["data_filename"]
     mapping_name = config["mapping_name"]
     labels = config["tested_labels"][mapping_name]
     combined_approach = config["combined_approach"]
@@ -59,7 +59,7 @@ def main():
     predictions_path = config["predictions_path"].replace("{timestamp}", timestamp)
     json_output_step_1 = config["json_output_step_1"].replace("{timestamp}", timestamp)
     csv_output_step_1 = config["csv_output_step_1"].replace("{timestamp}", timestamp)
-    step_1__NER_with_camembert_bio_gliner.main(data_path, labels, predictions_path, json_output_step_1, csv_output_step_1)
+    step_1__NER_with_camembert_bio_gliner.main(data_filename, labels, predictions_path, json_output_step_1, csv_output_step_1)
 
     csv_output_step_2 = config["csv_output_step_2"].replace("{timestamp}", timestamp)
     ollama_model_for_ner = config["ollama_model_for_ner"]

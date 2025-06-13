@@ -1,12 +1,12 @@
-# path to data to process
+# for more details about the parameters, please refer to the README.md file
+
+# data folders
 data_filename: "../data/training_data/20250428_NP_train-evalLLM.json"
 # data_filename: "../data/test_data/20250516_NP_test_evalLLM.json"
-
-# path to save predictions
 predictions_path: "predictions/predictions_{timestamp}/"
 
 # approach (CamemBERT bio GLiNER alone or combined with LLM)
-combined_approach: True  # if True : call LLM ; if False : simple mapping to true labels (step 2)
+combined_approach: True
 
 # LLM requests
 ollama_url: "http://localhost:11434/api/generate"
@@ -15,6 +15,7 @@ ollama_model_for_re: "llama3.2:1b"
 llm_attempts_requests_for_ner: 2
 llm_attempts_requests_for_re: 2
 
+# temporary files
 # step 1
 json_output_step_1: "predictions/predictions_{timestamp}/{timestamp}_predictions_step_1.json"
 csv_output_step_1: "predictions/predictions_{timestamp}/{timestamp}_predictions_vs_truth_step_1.csv"
@@ -34,12 +35,14 @@ graph_step_4: "predictions/predictions_{timestamp}/{timestamp}_graph_step_4.html
 # step 5
 json_output_step_5: "predictions/predictions_{timestamp}/{timestamp}_predictions_step_5.json"
 
+# result
 # step 6
 json_output_step_6: "predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json"
 
-mapping_name: 14
-
-tested_labels: {
+# labels and mapping
+# ...initial NER
+labels_version: 14
+labels: {
   1: ['ORGANIZATION', 'LOCATION', 'REL_DATE', 'LOC_REF_TO_ORG', 'INF_DISEASE', 'NON_INF_DISEASE', 'ABS_PERIOD', 'DOC_DATE', 'TOXIC_C_AGENT', 'ORG_REF_TO_LOC', 'FUZZY_PERIOD', 'BIO_TOXIN', 'EXPLOSIVE', 'RADIOISOTOPE', 'REL_PERIOD', 'DOC_SOURCE', 'PATHOGEN', 'DOC_AUTHOR', 'PATH_REF_TO_DIS', 'ABS_DATE', 'DIS_REF_TO_PATH'],
   2: ['ORGANIZATION', 'LOCATION', 'RELATIVE DATE', 'LOCATION REFERENCE TO ORGANIZATION', 'INFECTIOUS DISEASE', 'NON INFECTIOUS DISEASE', 'ABSOLUTE PERIOD', 'DOCUMENT DATE', 'TOXIC C AGENT', 'ORGANIZATION REFERENCE TO LOCATION', 'FUZZY PERIOD', 'BIO TOXIN', 'EXPLOSIVE', 'RADIOISOTOPE', 'RELATIVE PERIOD', 'DOCUMENT SOURCE', 'PATHOGEN', 'DOCUMENT AUTHOR', 'PATH REFERENCE TO DISEASE', 'ABSOLUTE DATE', 'DISEASE REFERENCE TO PATH'],
   3: ['Organization', 'Location', 'Relative date', 'Location reference to organization', 'Infectious disease', 'Non infectious disease', 'Absolute period', 'Document date', 'Toxic c agent', 'Organization reference to location', 'Fuzzy period', 'Bio toxin', 'Explosive', 'Radioisotope', 'Relative period', 'Document source', 'Pathogen', 'Document author', 'Path reference to disease', 'Absolute date', 'Disease reference to path'],
@@ -58,8 +61,8 @@ tested_labels: {
   16: ['Organisation', 'Lieu', 'Date', 'Maladie', 'Période', 'Agent toxique', 'Bio toxine', 'Matière explosive', 'Radioisotope', 'Source document', 'Agent pathogène', 'Auteur document'],
 }
 
-# No LLM case
-complete_mapping: {
+# ...fine-grained classification
+expected_labels_mapping: {
   1: {},
   2: {
     'REL_DATE': 'RELATIVE DATE',
@@ -328,8 +331,6 @@ complete_mapping: {
     'DOC_AUTHOR': 'Auteur document',
     'ABS_DATE': 'Date'},
 }
-
-# LLM case
 simple_mapping: {
   14: {
     "Organisation": "ORGANIZATION",

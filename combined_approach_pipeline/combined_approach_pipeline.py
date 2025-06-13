@@ -54,21 +54,25 @@ def main():
     data_filename = config["data_filename"]
     labels_version = config["labels_version"]
     labels = config["labels"][labels_version]
-    combined_approach = config["combined_approach"]
+    fine_grained_classification = config["fine_grained_classification"]
     ollama_url = config["ollama_url"]
     predictions_path = config["predictions_path"].replace("{timestamp}", timestamp)
     json_output_step_1 = config["json_output_step_1"].replace("{timestamp}", timestamp)
     csv_output_step_1 = config["csv_output_step_1"].replace("{timestamp}", timestamp)
+
+    if not fine_grained_classification and "test" in data_filename:
+        raise Exception("For test data, only fine-grained classification is working. Please select training data or put fine-grained classification to False.")
+
     step_1__NER_with_camembert_bio_gliner.main(data_filename, labels, predictions_path, json_output_step_1, csv_output_step_1)
 
     csv_output_step_2 = config["csv_output_step_2"].replace("{timestamp}", timestamp)
     ollama_model_for_ner = config["ollama_model_for_ner"]
     json_output_step_2 = config["json_output_step_2"].replace("{timestamp}", timestamp)
-    if combined_approach:
+    if fine_grained_classification:
         logging.info(f"### STEP 2: NER labels refining with {ollama_model_for_ner} ###")
         llm_attempts_requests_for_ner = config["llm_attempts_requests_for_ner"]
-        simple_mapping = config["simple_mapping"][labels_version]
-        step_2__NER_with_LLM.fine_grained_classification_with_llm(json_output_step_1, json_output_step_2, csv_output_step_1, csv_output_step_2, simple_mapping, ollama_url, ollama_model_for_ner, llm_attempts_requests_for_ner)
+        predicted_labels_mapping = config["predicted_labels_mapping"][labels_version]
+        step_2__NER_with_LLM.fine_grained_classification_with_llm(json_output_step_1, json_output_step_2, csv_output_step_1, csv_output_step_2, predicted_labels_mapping, ollama_url, ollama_model_for_ner, llm_attempts_requests_for_ner)
     else:
         logging.info("### STEP 2: NER labels mapping on reference ###")
         expected_labels_mapping = config["expected_labels_mapping"][labels_version]
@@ -82,7 +86,7 @@ def main():
     logging.info("### STEP 4: NER results exploration ###")
     xlsx_output_step_4 = config["xlsx_output_step_4"].replace("{timestamp}", timestamp)
     graph_step_4 = config["graph_step_4"].replace("{timestamp}", timestamp)
-    step_4__NER_results_exploration.main(csv_output_step_3, xlsx_output_step_4, graph_step_4, combined_approach)
+    step_4__NER_results_exploration.main(csv_output_step_3, xlsx_output_step_4, graph_step_4, fine_grained_classification)
 
     ollama_model_for_re = config["ollama_model_for_re"]
     logging.info(f"### STEP 5: RE with {ollama_model_for_re} ###")

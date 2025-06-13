@@ -62,7 +62,7 @@ The pipeline will produce **logs** and will also generate, for each step, **temp
 
 The following steps are performed:
 1. **NER with Camembert bio GLiNER** and a simplified list of labels. The model will find entities and attribute a label.
-2. **Fine-grained classification with LLM** to specify labels previously predicted. For test dataset, the non-merged labels will be mapped (e.g., it will convert *Lieu* in *LOCATION*) and the merged labels (*Maladie*, *Date* and *Periode*) will be refine by requesting a LLM. For training dataset, it is possible to do a mapping to have results.
+2. **Fine-grained classification with LLM** to specify labels previously predicted. For test dataset, the non-merged labels will be mapped (e.g., it will convert *Lieu* in *LOCATION*) and the merged labels (*Maladie*, *Date* and *Periode*) will be refine by requesting a LLM. For training dataset, it is possible to do a mapping from expected labels to the simplified label to estimate the results.
 3. **NER post-processing** to :
     - correct start and end positions if needed ;
     - retrieve all mentions of the same entity in the text ;
@@ -91,44 +91,44 @@ pip install -r requirements.txt
 All user-configurable parameters are located in the `config.yml` file and are detailed below:
 
 #### Data folders
-- `data_filename` (str): data to process (the train or test keyword must be in the filename)
-- `predictions_path` (str): path to save results
+- `data_filename` (str): data to process (`train` or `test` keyword must be in the filename).
+- `predictions_path` (str): path to save results.
 
-#### 
-- `combined_approach` (bool): approach (CamemBERT bio GLiNER alone or combined with LLM), # if True : CamemBERT bio GLiNER is combined with LLM ; if False : simple mapping to true labels (step 2) = useful to evaluate the potential of CamemBERT-bio-GLiNER on training data for example
+#### Fine-grained classification
+- `fine_grained_classification` (bool): CamemBERT bio GLiNER alone or combined with LLM for step 2. If `False` (only for training dataset), a mapping from expected labels to the simplified label will be performed to estimate the results. If `True`, CamemBERT bio GLiNER is combined with LLM to refine NER results.
 
 #### LLM requests
-- `ollama_url` (str): Ollama url to request
-- `ollama_model_for_ner` (str): Ollama model used for NER
-- `ollama_model_for_re` (str): Ollama model used for RE
-- `llm_attempts_requests_for_ner` (int): number of LLM attemps requests for NER
-- `llm_attempts_requests_for_re` (int): number of LLM attemps requests for RE
+- `ollama_url` (str): Ollama url to request.
+- `ollama_model_for_ner` (str): Ollama model used for NER.
+- `ollama_model_for_re` (str): Ollama model used for RE.
+- `llm_attempts_requests_for_ner` (int): number of LLM attemps requests for NER.
+- `llm_attempts_requests_for_re` (int): number of LLM attemps requests for RE.
 
 #### Temporary files
-- `json_output_step_1` (str): JSON output file of step 1
-- `csv_output_step_1` (str): CSV output file of step 1
-- `json_output_step_2` (str): JSON output file of step 2
-- `csv_output_step_2` (str): CSV output file of step 2
-- `json_output_step_3` (str): JSON output file of step 3
-- `csv_output_step_3` (str): CSV output file of step 3
-- `xlsx_output_step_4` (str): XLSX output file of step 4
-- `graph_step_4` (str): graphs path of step 4 (HTML and PNG)
-- `json_output_step_5` (str): JSON output file of step 5
+- `json_output_step_1` (str): JSON output file of step 1.
+- `csv_output_step_1` (str): CSV output file of step 1.
+- `json_output_step_2` (str): JSON output file of step 2.
+- `csv_output_step_2` (str): CSV output file of step 2.
+- `json_output_step_3` (str): JSON output file of step 3.
+- `csv_output_step_3` (str): CSV output file of step 3.
+- `xlsx_output_step_4` (str): XLSX output file of step 4.
+- `graph_step_4` (str): graphs path of step 4 (HTML and PNG).
+- `json_output_step_5` (str): JSON output file of step 5.
 
 #### Result
-- `json_output_step_6` (str): JSON output file of step 6 which is the result of the pipeline
+- `json_output_step_6` (str): JSON output file of step 6 which is the result of the pipeline.
 
 #### Labels and mapping for initial NER
-- `labels_version` (int): version number of the list of labels (from `labels` below) for initial NER
-- `labels` (dict): a dictionnary containing different lists of labels and their id (for `labels_version` above)
+- `labels_version` (int): version number of the list of labels (from `labels` below) for initial NER.
+- `labels` (dict): a dictionnary containing different lists of labels and their id (for `labels_version` above).
 
 #### Mapping for fine-grained classification
-- `expected_labels_mapping` (dict): mapping from expected labels to the simplified labels  
-- `predicted_labels_mapping` (dict):
+- `expected_labels_mapping` (dict): mapping from expected labels to the simplified labels (used for fine-grained classification on training data without LLM request, only to estimate the results).
+- `predicted_labels_mapping` (dict): mapping for the non-merged labels (e.g., convert *Lieu* in *LOCATION*). This is used for fine-grained classification with LLM request to refine labels.
 
 ### Run pipeline
 1. Before running the pipeline, make sure to :
-    - Put the training or test dataset in the `data/` folder, in either `train_data/` or `test_data/`, as appropriate.
+    - Put the training or test dataset in the `data/` folder, in either `train_data/` or `test_data/`, as appropriate. Make sure that the keyword `test` or `train` are in the filename (as the information is used in the code).
     - Modify the configuration file (`combined_approach_pipeline/config.yml`) with at least:
         - the file to process (`data_filename` argument) ;
         - the Ollama url (`ollama_url` argument) ;

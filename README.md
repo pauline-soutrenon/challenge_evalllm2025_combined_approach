@@ -68,7 +68,7 @@ The following steps are performed:
     - retrieve all mentions of the same entity in the text ;
     - add unique ids ;
     - handle the non-overlapping of entities.
-4. **NER results exploration** to have some statistics about the NER. It will generate a XLSX file to check how many labels have been refined and graph(s). For test dataset, it will generate 2 HTML files (one with the number of predicted entities per label and one with the number of post-processed entities per label). For training dataset, it will generate an HTML graph and 2 PNG one with all labels and another with filtered labels. a comparison to expected results.
+4. **NER results exploration** to have some statistics about the NER. It will generate a XLSX file to check how many labels have been refined and graph(s). For test dataset, it will generate 2 HTML files (one with the number of predicted entities per label and one with the number of post-processed entities per label). For training dataset, it will generate 1 HTML and 2 PNG files to compare expected results and predicted results (on post-processed entities) per label. One PNG file will contain all labels and teh other one filtered labels.
 5. **RE with LLM**.
 6. **RE postprocessing** to check if events provided by the LLM are valid (correct format and at least a central and an associated event).
 
@@ -112,7 +112,7 @@ All user-configurable parameters are located in the `config.yml` file and are de
 - `json_output_step_3` (str): JSON output file of step 3
 - `csv_output_step_3` (str): CSV output file of step 3
 - `xlsx_output_step_4` (str): XLSX output file of step 4
-- `graph_step_4` (str): graphs of step 4 (HTML and PNG)
+- `graph_step_4` (str): graphs path of step 4 (HTML and PNG)
 - `json_output_step_5` (str): JSON output file of step 5
 
 #### Result

@@ -86,7 +86,7 @@ pip install -r requirements.txt
 
 ### Configuration file
 All user-configurable parameters are located in the `config.yml` file and are detailed below:
-- **data_path** (str): path to data to process (the train or test keyword must be in the filename)
+- **data_filename** (str): path to data to process (the train or test keyword must be in the filename)
 - **predictions_path** (str): path to save predictions / final results
 - **combined_approach** (bool): approach (CamemBERT bio GLiNER alone or combined with LLM), # if True : call LLM ; if False : simple mapping to true labels (step 2)
 - **ollama_url** (str)
@@ -113,7 +113,7 @@ All user-configurable parameters are located in the `config.yml` file and are de
 1. Before running the pipeline, make sure to :
     - Put the training or test dataset in the `data/` folder, in either `train_data/` or `test_data/`, as appropriate.
     - Modify the configuration file (`combined_approach_pipeline/config.yml`) with at least:
-        - the file to process (`data_path` argument) ;
+        - the file to process (`data_filename` argument) ;
         - the Ollama url (`ollama_url` argument) ;
         - the Ollama model to use for NER (`ollama_model_for_ner` argument) ;
         - the Ollama model to use for RE (`ollama_model_for_re` argument).

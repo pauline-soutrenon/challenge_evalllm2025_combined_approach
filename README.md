@@ -91,40 +91,40 @@ pip install -r requirements.txt
 All user-configurable parameters are located in the `config.yml` file and are detailed below:
 
 #### Data folders
-- **data_filename** (str): data to process (the train or test keyword must be in the filename)
-- **predictions_path** (str): path to save results
+- `data_filename` (str): data to process (the train or test keyword must be in the filename)
+- `predictions_path` (str): path to save results
 
 #### 
-- **combined_approach** (bool): approach (CamemBERT bio GLiNER alone or combined with LLM), # if True : CamemBERT bio GLiNER is combined with LLM ; if False : simple mapping to true labels (step 2) = useful to evaluate the potential of CamemBERT-bio-GLiNER on training data for example
+- `combined_approach` (bool): approach (CamemBERT bio GLiNER alone or combined with LLM), # if True : CamemBERT bio GLiNER is combined with LLM ; if False : simple mapping to true labels (step 2) = useful to evaluate the potential of CamemBERT-bio-GLiNER on training data for example
 
 #### LLM requests
-- **ollama_url** (str): Ollama url to request
-- **ollama_model_for_ner** (str): Ollama model used for NER
-- **ollama_model_for_re** (str): Ollama model used for RE
-- **llm_attempts_requests_for_ner** (int): number of LLM attemps requests for NER
-- **llm_attempts_requests_for_re** (int): number of LLM attemps requests for RE
+- `ollama_url` (str): Ollama url to request
+- `ollama_model_for_ner` (str): Ollama model used for NER
+- `ollama_model_for_re` (str): Ollama model used for RE
+- `llm_attempts_requests_for_ner` (int): number of LLM attemps requests for NER
+- `llm_attempts_requests_for_re` (int): number of LLM attemps requests for RE
 
 #### Temporary files
-- **json_output_step_1** (str): JSON output file of step 1
-- **csv_output_step_1** (str): CSV output file of step 1
-- **json_output_step_2** (str): JSON output file of step 2
-- **csv_output_step_2** (str): CSV output file of step 2
-- **json_output_step_3** (str): JSON output file of step 3
-- **csv_output_step_3** (str): CSV output file of step 3
-- **xlsx_output_step_4** (str): XLSX output file of step 4
-- **graph_step_4** (str): graphs of step 4 (HTML and PNG)
-- **json_output_step_5** (str): JSON output file of step 5
+- `json_output_step_1` (str): JSON output file of step 1
+- `csv_output_step_1` (str): CSV output file of step 1
+- `json_output_step_2` (str): JSON output file of step 2
+- `csv_output_step_2` (str): CSV output file of step 2
+- `json_output_step_3` (str): JSON output file of step 3
+- `csv_output_step_3` (str): CSV output file of step 3
+- `xlsx_output_step_4` (str): XLSX output file of step 4
+- `graph_step_4` (str): graphs of step 4 (HTML and PNG)
+- `json_output_step_5` (str): JSON output file of step 5
 
 #### Result
-- **json_output_step_6** (str): JSON output file of step 6 which is the result of the pipeline
+- `json_output_step_6` (str): JSON output file of step 6 which is the result of the pipeline
 
 #### Labels and mapping for initial NER
-- **labels_version** (int): version number of the list of labels (from `labels` below) for initial NER
-- **labels** (dict): a dictionnary containing different lists of labels and their id (for `labels_version` above)
+- `labels_version` (int): version number of the list of labels (from `labels` below) for initial NER
+- `labels` (dict): a dictionnary containing different lists of labels and their id (for `labels_version` above)
 
 #### Mapping for fine-grained classification
-- **expected_labels_mapping** (dict): mapping from expected labels to the simplified labels  
-- **predicted_labels_mapping** (dict):
+- `expected_labels_mapping` (dict): mapping from expected labels to the simplified labels  
+- `predicted_labels_mapping` (dict):
 
 ### Run pipeline
 1. Before running the pipeline, make sure to :

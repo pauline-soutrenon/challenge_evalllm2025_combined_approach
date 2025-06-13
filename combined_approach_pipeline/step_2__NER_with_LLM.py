@@ -256,7 +256,7 @@ def extract_and_map_labels(true_entities: str, label_mapping: Dict) -> List:
             return entities
 
 
-def remap_true_entities(predictions_vs_truth_filename: str, label_mapping: Dict, output_filename: str):
+def remap_true_entities(predictions_vs_truth_filename: str, output_filename: str, json_input_filename: str, json_output_filename: str, label_mapping: Dict):
     """
     Remap true entities labels so expected results can easily be compared with predicted ones
 
@@ -265,10 +265,19 @@ def remap_true_entities(predictions_vs_truth_filename: str, label_mapping: Dict,
         label_mapping (Dict): dictionnary containing the conversion from expected labels to number of LLM attemps requests
         output_filename (str): CSV output filename
     """
-    # Load CSV into DataFrame
+    # Load CSV
     df = pd.read_csv(predictions_vs_truth_filename)
     # Apply the mapping function to the 'true_entities' column
     df['true_entities_mapped'] = df['true_entities'].apply(lambda x: extract_and_map_labels(x, label_mapping))
     # Save the updated DataFrame to a new CSV file
     df.to_csv(output_filename, index=False)
     logging.info(f"\t✅ CSV file saved at: {output_filename}")
+
+    # Only copy JSON step 1
+    # Load JSON
+    with open(json_input_filename, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    # Save JSON
+    with open(json_output_filename, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    logging.info(f"\t✅ JSON file saved at: {json_output_filename}")

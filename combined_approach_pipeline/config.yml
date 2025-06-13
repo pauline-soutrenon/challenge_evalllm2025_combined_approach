@@ -1,12 +1,14 @@
 # for more details about the parameters, please refer to the README.md file
 
 # data folders
-data_filename: "../data/training_data/20250428_NP_train-evalLLM.json"
-# data_filename: "../data/test_data/20250516_NP_test_evalLLM.json"
+# data_filename: "../data/training_data/20250428_NP_train-evalLLM.json"
+data_filename: "../data/test_data/20250516_NP_test_evalLLM.json"
 predictions_path: "predictions/predictions_{timestamp}/"
 
 # approach (CamemBERT bio GLiNER alone or combined with LLM)
-combined_approach: True
+# If `False` (only for training dataset), a mapping from expected labels to the simplified label will be performed to estimate the results. 
+# If `True`, CamemBERT bio GLiNER is combined with LLM to refine NER results.
+fine_grained_classification: True
 
 # LLM requests
 ollama_url: "http://localhost:11434/api/generate"
@@ -331,7 +333,7 @@ expected_labels_mapping: {
     'DOC_AUTHOR': 'Auteur document',
     'ABS_DATE': 'Date'},
 }
-simple_mapping: {
+predicted_labels_mapping: {
   14: {
     "Organisation": "ORGANIZATION",
     "Lieu": "LOCATION",

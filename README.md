@@ -61,15 +61,15 @@ Combined approach pipeline can be found in the `combined_approach_pipeline/` fol
 The pipeline will produce **logs** and will also generate, for each step, **temporary files** in JSON and CSV format in the predictions path (see the parameter `predictions_path` in `config.yml` file). The **result** of the pipeline is the output of step 6 and can be found in `predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json`.
 
 The following steps are performed:
-1. **NER with Camembert bio GLiNER** and a simplified list of labels. The model will find entities and attribute a label.
-2. **Fine-grained classification with LLM** to specify labels previously predicted. For test dataset, the non-merged labels will be mapped (e.g., it will convert *Lieu* in *LOCATION*) and the merged labels (*Maladie*, *Date* and *Periode*) will be refine by requesting a LLM. For training dataset, it is possible to do a mapping from expected labels to the simplified label to estimate the results.
+1. **NER with Camembert bio GLiNER** and a simplified list of labels. The model identifies entities in the text and assigns them a label.
+2. **Fine-grained classification with LLM** to specify the labels predicted in the previous step. For test dataset, merged labels (e.g., Disease, Date, Period) are further specified using the LLM, while non-merged labels are directly mapped (e.g., Lieu → LOCATION). For training dataset, expected labels can be mapped to the simplified labels to evaluate performance.
 3. **NER post-processing** to :
-    - correct start and end positions if needed ;
+    - correct start and end positions if necessary ;
     - retrieve all mentions of the same entity in the text ;
-    - add unique ids ;
-    - handle the non-overlapping of entities.
-4. **NER results exploration** to have some statistics about the NER. It will generate a XLSX file to check how many labels have been refined and graph(s). For test dataset, it will generate 2 HTML files (one with the number of predicted entities per label and one with the number of post-processed entities per label). For training dataset, it will generate 1 HTML and 2 PNG files to compare expected results and predicted results (on post-processed entities) per label. One PNG file will contain all labels and teh other one filtered labels.
-5. **RE with LLM**.
+    - add unique ids to entities;
+    - ensure that entities do not overlap.
+4. **NER results exploration** to have statistics and visualizations about the NER. It will generate a XLSX file to show how many labels were refined. For test dataset, it will generate 2 HTML files (one showing the number of predicted entities per label, and another showing post-processed entities per label). For training dataset, it will generate 1 HTML and 2 PNG files to compare expected vs. predicted labels after post-processing (one PNG shows all labels, the other shows filtered labels).
+5. **RE with LLM**: a LLM is used to identify relationships (events) between entities.
 6. **RE postprocessing** to check if events provided by the LLM are valid (correct format and at least a central and an associated event).
 
 ### Install pipeline

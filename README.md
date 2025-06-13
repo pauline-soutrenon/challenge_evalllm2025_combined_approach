@@ -14,7 +14,7 @@
     - [LLM prompts](#llm-prompts)
 
 ## Description
-This repository contains our work for the [EvalLLM2025 challenge](https://evalllm2025.sciencesconf.org/resource/page/id/5) about information extraction (Named Entity Recognition and Relations Extraction).
+This repository contains our work for the [EvalLLM2025 challenge](https://evalllm2025.sciencesconf.org/resource/page/id/5) about information extraction on Named Entity Recognition (NER) and Relationship Extraction (RE).
 
 We began with an **exploratory data analysis** phase to better understand the training dataset.
 
@@ -58,21 +58,19 @@ Combined approach pipeline can be found in the `combined_approach_pipeline/` fol
 ### Workflow
 ![Combined approach workflow](documentation/combined_approach_workflow_en.png)
 
-By running this pipeline, the following steps will be performed:
-1. **NER with Camembert bio GLiNER** and a simplified list of labels.
-2. **Fine-grained classification with LLM** to specify labels previously predicted (for training dataset, it is possible to do a mapping to have results).
+The pipeline will produce **logs** and will also generate, for each step, **temporary files** in JSON and CSV format in the predictions path (see the parameter `predictions_path` in `config.yml` file). The **result** of the pipeline is the output of step 6 and can be found in `predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json`.
+
+The following steps are performed:
+1. **NER with Camembert bio GLiNER** and a simplified list of labels. The model will find entities and attribute a label.
+2. **Fine-grained classification with LLM** to specify labels previously predicted. For test dataset, the non-merged labels will be mapped (e.g., it will convert *Lieu* in *LOCATION*) and the merged labels (*Maladie*, *Date* and *Periode*) will be refine by requesting a LLM. For training dataset, it is possible to do a mapping to have results.
 3. **NER post-processing** to :
     - correct start and end positions if needed ;
     - retrieve all mentions of the same entity in the text ;
     - add unique ids ;
     - handle the non-overlapping of entities.
-4. **NER results exploration** : it will generate a graph of predicted entities per label and for training dataset, a comparison to expected results.
-5. **RE with LLM** : the non-merged labels will be map and the merged labels (*Maladie*, *Date* and *Periode*) will be refine by requesting a LLM.
+4. **NER results exploration** to have some statistics about the NER. It will generate a XLSX file to check how many labels have been refined and graph(s). For test dataset, it will generate 2 HTML files (one with the number of predicted entities per label and one with the number of post-processed entities per label). For training dataset, it will generate an HTML graph and 2 PNG one with all labels and another with filtered labels. a comparison to expected results.
+5. **RE with LLM**.
 6. **RE postprocessing** to check if events provided by the LLM are valid (correct format and at least a central and an associated event).
-
-The pipeline will produce logs and will also generate **temporary files** (in JSON and CSV format) for each steps so the user can see what happen at any steps of the process. The **result** of the pipeline is the output of step 6.
-
-The results of each steps are available in in the predictions path (see the parameter `predictions_path` in `config.yml` file): `predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json`
 
 ### Install pipeline
 1. Create a Conda environment or a venv:
@@ -147,4 +145,4 @@ python combined_approach_pipeline.py
 3. The results of each steps are available in in the predictions path (see the parameter `predictions_path` in `config.yml` file): `predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json`.
 
 ### LLM prompts
-LLM prompts used for fine-grained classification and relation extraction are available in `combined_approach_pipeline/get_prompt_for_llm.py` file.
+LLM prompts used for fine-grained classification and RE are available in `combined_approach_pipeline/get_prompt_for_llm.py` file.

@@ -52,8 +52,8 @@ def main():
 
     logging.info("### STEP 1: NER with Camembert Bio GLiNER ###")
     data_filename = config["data_filename"]
-    mapping_name = config["mapping_name"]
-    labels = config["tested_labels"][mapping_name]
+    labels_version = config["labels_version"]
+    labels = config["labels"][labels_version]
     combined_approach = config["combined_approach"]
     ollama_url = config["ollama_url"]
     predictions_path = config["predictions_path"].replace("{timestamp}", timestamp)
@@ -67,32 +67,32 @@ def main():
     if combined_approach:
         logging.info(f"### STEP 2: NER labels refining with {ollama_model_for_ner} ###")
         llm_attempts_requests_for_ner = config["llm_attempts_requests_for_ner"]
-        simple_mapping = config["simple_mapping"][mapping_name]
+        simple_mapping = config["simple_mapping"][labels_version]
         step_2__NER_with_LLM.fine_grained_classification_with_llm(json_output_step_1, json_output_step_2, csv_output_step_1, csv_output_step_2, simple_mapping, ollama_url, ollama_model_for_ner, llm_attempts_requests_for_ner)
     else:
         logging.info("### STEP 2: NER labels mapping on reference ###")
-        complete_mapping = config["complete_mapping"][mapping_name]
-        step_2__NER_with_LLM.remap_true_entities(csv_output_step_1, csv_output_step_2, json_output_step_1, json_output_step_2, complete_mapping)
+        expected_labels_mapping = config["expected_labels_mapping"][labels_version]
+        step_2__NER_with_LLM.remap_true_entities(csv_output_step_1, csv_output_step_2, json_output_step_1, json_output_step_2, expected_labels_mapping)
 
-    # logging.info("### STEP 3: NER postprocessing ###")
-    # json_output_step_3 = config["json_output_step_3"].replace("{timestamp}", timestamp)
-    # csv_output_step_3 = config["csv_output_step_3"].replace("{timestamp}", timestamp)
-    # step_3__NER_postprocess.main(json_output_step_2, json_output_step_3, csv_output_step_2, csv_output_step_3)
+    logging.info("### STEP 3: NER postprocessing ###")
+    json_output_step_3 = config["json_output_step_3"].replace("{timestamp}", timestamp)
+    csv_output_step_3 = config["csv_output_step_3"].replace("{timestamp}", timestamp)
+    step_3__NER_postprocess.main(json_output_step_2, json_output_step_3, csv_output_step_2, csv_output_step_3)
 
-    # logging.info("### STEP 4: NER results exploration ###")
-    # xlsx_output_step_4 = config["xlsx_output_step_4"].replace("{timestamp}", timestamp)
-    # graph_step_4 = config["graph_step_4"].replace("{timestamp}", timestamp)
-    # step_4__NER_results_exploration.main(csv_output_step_3, xlsx_output_step_4, graph_step_4, combined_approach)
+    logging.info("### STEP 4: NER results exploration ###")
+    xlsx_output_step_4 = config["xlsx_output_step_4"].replace("{timestamp}", timestamp)
+    graph_step_4 = config["graph_step_4"].replace("{timestamp}", timestamp)
+    step_4__NER_results_exploration.main(csv_output_step_3, xlsx_output_step_4, graph_step_4, combined_approach)
 
-    # ollama_model_for_re = config["ollama_model_for_re"]
-    # logging.info(f"### STEP 5: RE with {ollama_model_for_re} ###")
-    # llm_attempts_requests_for_re = config["llm_attempts_requests_for_re"]
-    # json_output_step_5 = config["json_output_step_5"].replace("{timestamp}", timestamp)
-    # step_5__RE_with_LLM.main(json_output_step_3, json_output_step_5, llm_attempts_requests_for_re, ollama_url, ollama_model_for_re)
+    ollama_model_for_re = config["ollama_model_for_re"]
+    logging.info(f"### STEP 5: RE with {ollama_model_for_re} ###")
+    llm_attempts_requests_for_re = config["llm_attempts_requests_for_re"]
+    json_output_step_5 = config["json_output_step_5"].replace("{timestamp}", timestamp)
+    step_5__RE_with_LLM.main(json_output_step_3, json_output_step_5, llm_attempts_requests_for_re, ollama_url, ollama_model_for_re)
 
-    # logging.info("### STEP 6: RE postprocessing ###")
-    # json_output_step_6 = config["json_output_step_6"].replace("{timestamp}", timestamp)
-    # step_6__RE_postprocess.main(json_output_step_5, json_output_step_6)
+    logging.info("### STEP 6: RE postprocessing ###")
+    json_output_step_6 = config["json_output_step_6"].replace("{timestamp}", timestamp)
+    step_6__RE_postprocess.main(json_output_step_5, json_output_step_6)
 
     elapsed_time = time.time() - start_time
     hours = int(elapsed_time // 3600)

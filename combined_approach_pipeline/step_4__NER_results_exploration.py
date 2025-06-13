@@ -302,19 +302,19 @@ def generate_bar_graph_for_test_dataset(df: pd.DataFrame, df_column_name_to_proc
     logging.info(f"\t✅ HTML graph saved at: {output_html}")
 
 
-def add_summing_row(df: pd.DataFrame, combined_approach: bool) -> pd.DataFrame:
+def add_summing_row(df: pd.DataFrame, fine_grained_classification: bool) -> pd.DataFrame:
     """Add a summing row to DataFrame
 
     Args:
         df (pd.DataFrame): DataFrame to process
-        combined_approach (bool): if it's a combined approach or not
+        fine_grained_classification (bool): if it's a combined approach or not
 
     Returns:
         pd.DataFrame: DataFrame with summing row
     """
     # Columns to sum
     columns_to_sum = ['nb_true_entities', 'nb_postprocessed_entities', 'nb_correct_predictions', 'nb_incorrect_predictions']
-    if not combined_approach:
+    if not fine_grained_classification:
         columns_to_sum.append('nb_true_entities_mapped')
     # Create the summary row with dtype=object to accept mixed types
     summary_row = pd.Series(data=[np.nan] * len(df.columns), index=df.columns, dtype=object)
@@ -379,14 +379,14 @@ def match_entities(true_entities: List, predicted_entities: List) -> Tuple[List,
     return correct, incorrect
 
 
-def main(input_filename: str, output_filename: str, graph_filename: str, combined_approach: bool):
+def main(input_filename: str, output_filename: str, graph_filename: str, fine_grained_classification: bool):
     """Explore NER results
 
     Args:
         input_filename (str): CSV input to process
         output_filename (str): XLSX output with NER exploration
         graph_filename (str): filename of the graph to generate
-        combined_approach (bool): if it's a combined approach or not
+        fine_grained_classification (bool): if it's a combined approach or not
     """
     is_test_set = "test_data" in input_filename
 
@@ -395,7 +395,7 @@ def main(input_filename: str, output_filename: str, graph_filename: str, combine
 
     if not is_test_set:
         # Convert stringified lists of dicts to Python objects
-        if combined_approach:
+        if fine_grained_classification:
             column_name_for_reference_entities = "true_entities"
         else:
             column_name_for_reference_entities = "true_entities_mapped"
@@ -414,7 +414,7 @@ def main(input_filename: str, output_filename: str, graph_filename: str, combine
         )
 
         df['nb_true_entities'] = df['true_entities'].apply(len)
-        if not combined_approach:
+        if not fine_grained_classification:
             df['nb_true_entities_mapped'] = df[column_name_for_reference_entities].apply(len)
         df['nb_postprocessed_entities'] = df['postprocessed_entities'].apply(len)
         df['nb_correct_predictions'] = df['correct_predictions'].apply(len)
@@ -426,7 +426,7 @@ def main(input_filename: str, output_filename: str, graph_filename: str, combine
         df['nb_incorrect_predictions'] = df['incorrect_predictions'].apply(len)
 
         # Define columns to sum
-        df = add_summing_row(df, combined_approach)
+        df = add_summing_row(df, fine_grained_classification)
 
         # Save updated CSV with custom columns width
         save_xlsx_with_fixed_width(df, output_filename)

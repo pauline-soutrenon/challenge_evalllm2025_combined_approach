@@ -9,21 +9,21 @@ import get_prompt_for_llm
 from typing import Dict, List
 
 
-def process_simple_mapping(entities: List, simple_mapping: Dict) -> List:
+def process_predicted_labels_mapping(entities: List, predicted_labels_mapping: Dict) -> List:
     """
     Process simple mapping for non-merged labels
 
     Args:
         entities (List): list of entities to process
-        simple_mapping (Dict): dictionnary containing the mapping
+        predicted_labels_mapping (Dict): dictionnary containing the mapping
 
     Returns:
         List: list of entities processed
     """
     for entity in entities:
         original_label = entity.get('label')
-        if original_label in simple_mapping:
-            entity['label'] = simple_mapping[original_label]
+        if original_label in predicted_labels_mapping:
+            entity['label'] = predicted_labels_mapping[original_label]
     return entities
 
 
@@ -134,7 +134,7 @@ def process_llm_output(entities: List, llm_output: Dict, labels_to_refine: Dict)
     return entities
 
 
-def fine_grained_classification_with_llm(json_input_filename: str, json_output_filename: str, csv_input_filename: str, csv_output_filename: str, simple_mapping: Dict, ollama_url: str, ollama_model: str, llm_attempts_for_ner: int):
+def fine_grained_classification_with_llm(json_input_filename: str, json_output_filename: str, csv_input_filename: str, csv_output_filename: str, predicted_labels_mapping: Dict, ollama_url: str, ollama_model: str, llm_attempts_for_ner: int):
     """
     Fine-grained classification with LLM
 
@@ -143,7 +143,7 @@ def fine_grained_classification_with_llm(json_input_filename: str, json_output_f
         json_output_filename (str): JSON output
         csv_input_filename (str): CSV input to process
         csv_output_filename (str): CSV output
-        simple_mapping (Dict): dictionnary containing mapping for non-merged labels
+        predicted_labels_mapping (Dict): dictionnary containing mapping for non-merged labels
         ollama_url (str): Ollama url
         ollama_model (str): Ollama model to use
         llm_attempts_for_ner (int): number of LLM attemps requests
@@ -161,7 +161,7 @@ def fine_grained_classification_with_llm(json_input_filename: str, json_output_f
         entities = row.get("entities", [])
 
         # Apply simple mapping for unmerged labels
-        new_entities = process_simple_mapping(entities, simple_mapping)
+        new_entities = process_predicted_labels_mapping(entities, predicted_labels_mapping)
 
         # Get lists of Maladie, Période and Date
         disease_texts = [ent['text'].lower() for ent in new_entities if ent['label'] == 'Maladie']

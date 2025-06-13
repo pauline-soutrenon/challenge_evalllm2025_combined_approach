@@ -3,14 +3,15 @@
 ## Table of Contents
 - [Description](#description)
 - [Prerequisites](#prerequisites)
-- [Data exploration](#data_exploration)
+- [Data exploration](#data-exploration)
     - [Installation](#installation)
     - [Run](#run)
-- [Combined approach](#combined_approach)
+- [Combined approach](#combined-approach)
     - [Workflow](#workflow)
-    - [Installation](#installation)
-    - [Configuration file](#configuration_file)
-    - [Run](#run)
+    - [Install pipeline](#install-pipeline)
+    - [Configuration file](#configuration-file)
+    - [Run pipeline](#run-pipeline)
+    - [LLM prompts](#llm-prompts)
 
 ## Description
 This repository contains our work for the [EvalLLM2025 challenge](https://evalllm2025.sciencesconf.org/resource/page/id/5) about information extraction (Named Entity Recognition and Relations Extraction).
@@ -69,7 +70,11 @@ By running this pipeline, the following steps will be performed:
 5. **RE with LLM** : the non-merged labels will be map and the merged labels (*Maladie*, *Date* and *Periode*) will be refine by requesting a LLM.
 6. **RE postprocessing** to check if events provided by the LLM are valid (correct format and at least a central and an associated event).
 
-### Installation
+The pipeline will produce logs and will also generate **temporary files** (in JSON and CSV format) for each steps so the user can see what happen at any steps of the process. The **result** of the pipeline is the output of step 6.
+
+The results of each steps are available in in the predictions path (see the parameter `predictions_path` in `config.yml` file): `predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json`
+
+### Install pipeline
 1. Create a Conda environment or a venv:
 ```bash
 cd combined_approach_pipeline/
@@ -86,30 +91,44 @@ pip install -r requirements.txt
 
 ### Configuration file
 All user-configurable parameters are located in the `config.yml` file and are detailed below:
-- **data_filename** (str): path to data to process (the train or test keyword must be in the filename)
-- **predictions_path** (str): path to save predictions / final results
-- **combined_approach** (bool): approach (CamemBERT bio GLiNER alone or combined with LLM), # if True : call LLM ; if False : simple mapping to true labels (step 2)
-- **ollama_url** (str)
-- **ollama_model_for_ner** (str)
-- **ollama_model_for_re** (str)
-- **llm_attempts_requests_for_ner** (int)
-- **llm_attempts_requests_for_re** (int)
-- **json_output_step_1** (str): 
-- **csv_output_step_1** (str): 
-- **json_output_step_2** (str): 
-- **csv_output_step_2** (str): 
-- **json_output_step_3** (str): 
-- **csv_output_step_3** (str): 
-- **xlsx_output_step_4** (str): 
-- **graph_step_4** (str): 
-- **json_output_step_5** (str): 
-- **json_output_step_6** (str): 
-- **mapping_name** :
-- **tested_labels** :
-- **complete_mapping** :
-- **simple_mapping** :
 
-### Run
+#### Data folders
+- **data_filename** (str): data to process (the train or test keyword must be in the filename)
+- **predictions_path** (str): path to save results
+
+#### 
+- **combined_approach** (bool): approach (CamemBERT bio GLiNER alone or combined with LLM), # if True : CamemBERT bio GLiNER is combined with LLM ; if False : simple mapping to true labels (step 2) = useful to evaluate the potential of CamemBERT-bio-GLiNER on training data for example
+
+#### LLM requests
+- **ollama_url** (str): Ollama url to request
+- **ollama_model_for_ner** (str): Ollama model used for NER
+- **ollama_model_for_re** (str): Ollama model used for RE
+- **llm_attempts_requests_for_ner** (int): number of LLM attemps requests for NER
+- **llm_attempts_requests_for_re** (int): number of LLM attemps requests for RE
+
+#### Temporary files
+- **json_output_step_1** (str): JSON output file of step 1
+- **csv_output_step_1** (str): CSV output file of step 1
+- **json_output_step_2** (str): JSON output file of step 2
+- **csv_output_step_2** (str): CSV output file of step 2
+- **json_output_step_3** (str): JSON output file of step 3
+- **csv_output_step_3** (str): CSV output file of step 3
+- **xlsx_output_step_4** (str): XLSX output file of step 4
+- **graph_step_4** (str): graphs of step 4 (HTML and PNG)
+- **json_output_step_5** (str): JSON output file of step 5
+
+#### Result
+- **json_output_step_6** (str): JSON output file of step 6 which is the result of the pipeline
+
+#### Labels and mapping for initial NER
+- **labels_version** (int): version number of the list of labels (from `labels` below) for initial NER
+- **labels** (dict): a dictionnary containing different lists of labels and their id (for `labels_version` above)
+
+#### Mapping for fine-grained classification
+- **expected_labels_mapping** (dict): mapping from expected labels to the simplified labels  
+- **predicted_labels_mapping** (dict):
+
+### Run pipeline
 1. Before running the pipeline, make sure to :
     - Put the training or test dataset in the `data/` folder, in either `train_data/` or `test_data/`, as appropriate.
     - Modify the configuration file (`combined_approach_pipeline/config.yml`) with at least:
@@ -125,4 +144,7 @@ All user-configurable parameters are located in the `config.yml` file and are de
 python combined_approach_pipeline.py
 ```
 
-3. The results of each steps are available in predictions path (see `config.yml` file). "predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json"
+3. The results of each steps are available in in the predictions path (see the parameter `predictions_path` in `config.yml` file): `predictions/predictions_{timestamp}/{timestamp}_predictions_last_version.json`.
+
+### LLM prompts
+LLM prompts used for fine-grained classification and relation extraction are available in `combined_approach_pipeline/get_prompt_for_llm.py` file.
